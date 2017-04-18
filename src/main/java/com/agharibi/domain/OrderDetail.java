@@ -1,26 +1,27 @@
 package com.agharibi.domain;
 
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
-public class CartDetail extends AbstractDomain {
+public class OrderDetail extends AbstractDomain {
 
     @ManyToOne
-    private Cart cart;
+    private Order order;
 
     @OneToOne
     private Product product;
 
     private Integer quantity;
 
-    public Cart getCart() {
-        return cart;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setCart(Cart cart) {
-        this.cart = cart;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public Product getProduct() {

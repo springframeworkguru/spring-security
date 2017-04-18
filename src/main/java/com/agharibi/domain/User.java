@@ -1,6 +1,10 @@
 package com.agharibi.domain;
 
+import com.agharibi.domain.security.Role;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class User implements DomainObject {
@@ -25,6 +29,10 @@ public class User implements DomainObject {
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Cart cart;
+
+    @ManyToMany
+    @JoinTable
+    private List<Role> roles = new ArrayList<>();
 
     @Override
     public Integer getId() {
@@ -91,5 +99,25 @@ public class User implements DomainObject {
 
     public void setCart(Cart cart) {
         this.cart = cart;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        if(!this.roles.contains(role))
+            this.roles.add(role);
+        if(!role.getUsers().contains(this))
+          role.getUsers().add(this);
+    }
+
+    public void removeRole(Role role) {
+        this.roles.remove(role);
+        role.getUsers().remove(this);
     }
 }

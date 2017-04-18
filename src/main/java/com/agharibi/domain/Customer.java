@@ -19,11 +19,9 @@ public class Customer implements DomainObject {
     private String phoneNumber;
 
     @Embedded
-    @Column(name = "billing")
     private Address billingAddress;
 
     @Embedded
-    @Column(name = "shipping")
     private Address shippingAddress;
 
     @OneToOne
