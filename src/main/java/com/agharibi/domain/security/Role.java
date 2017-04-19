@@ -4,6 +4,7 @@ import com.agharibi.domain.AbstractDomain;
 import com.agharibi.domain.User;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class Role extends AbstractDomain{
 
     private String role;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable
     private List<User> users = new ArrayList<>();
 
