@@ -1,6 +1,8 @@
 package com.agharibi.commands;
 
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class CustomerForm {
 
     private Integer userId;
@@ -8,6 +10,7 @@ public class CustomerForm {
     private Integer customerId;
     private Integer customerVersion;
 
+    @NotEmpty
     private String userName;
     private String passwordText;
     private String passwordTextConf;
