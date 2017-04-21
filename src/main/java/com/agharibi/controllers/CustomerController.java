@@ -1,5 +1,6 @@
 package com.agharibi.controllers;
 
+import com.agharibi.commands.CustomerForm;
 import com.agharibi.domain.Customer;
 import com.agharibi.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class CustomerController {
 
     private CustomerService customerService;
-
-    @Autowired
-    public void setCustomerService(CustomerService customerService) {
-        this.customerService = customerService;
-    }
 
     @RequestMapping({"/list", "/"})
     public String listCustomers(Model model){
@@ -43,13 +39,13 @@ public class CustomerController {
 
     @RequestMapping("/new")
     public String newCustomer(Model model){
-        model.addAttribute("customer", new Customer());
+        model.addAttribute("customer", new CustomerForm());
         return "customer/customerform";
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String saveOrUpdate(Customer customer){
-        Customer newCustomer = customerService.saveOrUpdate(customer);
+    public String saveOrUpdate(CustomerForm customerForm){
+        Customer newCustomer = customerService.saveOrUpdateCustomerForm(customerForm);
         return "redirect:customer/show/" + newCustomer.getId();
     }
 
@@ -57,5 +53,10 @@ public class CustomerController {
     public String delete(@PathVariable Integer id){
         customerService.delete(id);
         return "redirect:/customer/list";
+    }
+
+    @Autowired
+    public void setCustomerService(CustomerService customerService) {
+        this.customerService = customerService;
     }
 }

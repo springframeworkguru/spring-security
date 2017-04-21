@@ -1,8 +1,11 @@
 package com.agharibi.services.mapServices;
 
+import com.agharibi.commands.CustomerForm;
+import com.agharibi.converters.CustomerFormToCustomer;
 import com.agharibi.domain.Customer;
 import com.agharibi.domain.DomainObject;
 import com.agharibi.services.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,8 @@ import java.util.List;
 @Service
 @Profile("map")
 public class CustomerServiceImpl extends AbstractMapService implements CustomerService {
+
+    private CustomerFormToCustomer customerFormToCustomer;
 
     @Override
     public List<DomainObject> listAll() {
@@ -36,5 +41,20 @@ public class CustomerServiceImpl extends AbstractMapService implements CustomerS
         super.delete(id);
     }
 
+    @Override
+    public Customer saveOrUpdateCustomerForm(CustomerForm customerForm) {
+        Customer customer = customerFormToCustomer.convert(customerForm);
 
+        if(customer.getUser().getId() != null) {
+            Customer existingCustomer = getById(customer.getId());
+            customer.getUser().setEnabled(existingCustomer.getUser().getEnabled());
+        }
+        return saveOrUpdate(customer);
+    }
+
+
+    @Autowired
+    public void setCustomerFormToCustomer(CustomerFormToCustomer customerFormToCustomer) {
+        this.customerFormToCustomer = customerFormToCustomer;
+    }
 }

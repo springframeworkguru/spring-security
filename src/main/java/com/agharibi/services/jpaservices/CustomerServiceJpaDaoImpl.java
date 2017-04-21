@@ -1,5 +1,7 @@
 package com.agharibi.services.jpaservices;
 
+import com.agharibi.commands.CustomerForm;
+import com.agharibi.converters.CustomerFormToCustomer;
 import com.agharibi.domain.Customer;
 import com.agharibi.services.CustomerService;
 import com.agharibi.services.security.EncryptionService;
@@ -15,6 +17,7 @@ import java.util.List;
 public class CustomerServiceJpaDaoImpl extends AbstractJpaDaoService implements CustomerService {
 
     private EncryptionService encryptionService;
+    private CustomerFormToCustomer customerFormToCustomer;
 
     @Override
     public List<Customer> listAll() {
@@ -54,8 +57,24 @@ public class CustomerServiceJpaDaoImpl extends AbstractJpaDaoService implements 
         em.getTransaction().commit();
     }
 
+    @Override
+    public Customer saveOrUpdateCustomerForm(CustomerForm customerForm) {
+        Customer customer = customerFormToCustomer.convert(customerForm);
+
+        if(customer.getUser().getId() != null) {
+            Customer exisitingCustomer = getById(customer.getUser().getId());
+            customer.getUser().setEnabled(exisitingCustomer.getUser().getEnabled());
+        }
+        return saveOrUpdate(customer);
+    }
+
     @Autowired
     public void setEncryptionService(EncryptionService encryptionService) {
         this.encryptionService = encryptionService;
+    }
+
+    @Autowired
+    public void setCustomerFormToCustomer(CustomerFormToCustomer customerFormToCustomer) {
+        this.customerFormToCustomer = customerFormToCustomer;
     }
 }
