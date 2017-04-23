@@ -1,26 +1,32 @@
 package com.agharibi.controllers;
 
 import com.agharibi.commands.CustomerForm;
+import com.agharibi.commands.validators.CustomerFormValidator;
+import com.agharibi.converters.CustomerFormToCustomer;
 import com.agharibi.domain.Customer;
 import com.agharibi.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 
-/**
- * Created by Armen on 4/8/17.
- */
+
+
 @RequestMapping("/customer")
 @Controller
 public class CustomerController {
 
     private CustomerService customerService;
+    private Validator customerFromValidator;
+    private CustomerFormToCustomer customerFormToCustomer;
+
 
     @RequestMapping({"/list", "/"})
     public String listCustomers(Model model){
@@ -49,6 +55,8 @@ public class CustomerController {
     @RequestMapping(method = RequestMethod.POST)
     public String saveOrUpdate(@Valid CustomerForm customerForm, BindingResult bindingResult){
 
+        customerFromValidator.validate(customerForm, bindingResult);
+
         if(bindingResult.hasErrors()) {
            return "customer/customerform";
        }
@@ -66,5 +74,16 @@ public class CustomerController {
     @Autowired
     public void setCustomerService(CustomerService customerService) {
         this.customerService = customerService;
+    }
+
+    @Autowired
+    @Qualifier("customerFormValidator")
+    public void setCustomerFromValidator(CustomerFormValidator customerFromValidator) {
+        this.customerFromValidator = customerFromValidator;
+    }
+
+    @Autowired
+    public void setCustomerFormToCustomer(CustomerFormToCustomer customerFormToCustomer) {
+        this.customerFormToCustomer = customerFormToCustomer;
     }
 }

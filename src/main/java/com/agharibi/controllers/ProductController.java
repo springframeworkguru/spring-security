@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 
-/**
- * Created by Armen on 4/8/17.
- */
+
 @Controller
 public class ProductController {
 
@@ -51,17 +49,18 @@ public class ProductController {
 
     @RequestMapping("/product/new")
     public String newProduct(Model model){
-        model.addAttribute("product", new ProductForm());
+        model.addAttribute("productForm", new ProductForm());
         return "product/productform";
     }
 
     @RequestMapping(value = "/product", method = RequestMethod.POST)
     public String saveOrUpdateProduct(@Valid ProductForm productForm, BindingResult bindingResult){
-        Product savedProduct = productService.saveOrUpdate(productForm);
 
         if(bindingResult.hasErrors()) {
             return "product/productform";
         }
+
+        Product savedProduct = productService.saveOrUpdate(productForm);
         return "redirect:/product/show/" + savedProduct.getId();
     }
 
