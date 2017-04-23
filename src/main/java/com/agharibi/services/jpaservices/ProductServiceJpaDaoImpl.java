@@ -1,8 +1,11 @@
 package com.agharibi.services.jpaservices;
 
 
+import com.agharibi.commands.ProductForm;
+import com.agharibi.converters.ProductFormToProduct;
 import com.agharibi.domain.Product;
 import com.agharibi.services.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,7 @@ import java.util.List;
 @Profile("jpadao")
 public class ProductServiceJpaDaoImpl extends AbstractJpaDaoService implements ProductService {
 
+    private ProductFormToProduct productFormToProduct;
 
     @Override
     public List<Product> listAll() {
@@ -46,4 +50,13 @@ public class ProductServiceJpaDaoImpl extends AbstractJpaDaoService implements P
         em.getTransaction().commit();
     }
 
+    @Override
+    public Product saveOrUpdate(ProductForm productForm) {
+        return saveOrUpdate(productFormToProduct.convert(productForm));
+    }
+
+    @Autowired
+    public void setProductFormToProduct(ProductFormToProduct productFormToProduct) {
+        this.productFormToProduct = productFormToProduct;
+    }
 }

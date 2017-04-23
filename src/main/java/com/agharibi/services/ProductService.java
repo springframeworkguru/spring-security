@@ -1,5 +1,6 @@
 package com.agharibi.services;
 
+import com.agharibi.commands.ProductForm;
 import com.agharibi.domain.Product;
 
 /**
@@ -7,4 +8,5 @@ import com.agharibi.domain.Product;
  */
 public interface ProductService extends CRUDService<Product> {
 
+    Product saveOrUpdate(ProductForm productForm);
 }

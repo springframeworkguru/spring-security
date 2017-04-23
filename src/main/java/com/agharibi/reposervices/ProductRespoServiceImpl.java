@@ -1,6 +1,8 @@
 package com.agharibi.reposervices;
 
 
+import com.agharibi.commands.ProductForm;
+import com.agharibi.converters.ProductFormToProduct;
 import com.agharibi.domain.Product;
 import com.agharibi.repositories.ProductRepository;
 import com.agharibi.services.ProductService;
@@ -16,6 +18,7 @@ import java.util.List;
 public class ProductRespoServiceImpl implements ProductService{
 
     private ProductRepository productRepository;
+    private ProductFormToProduct productFormToProduct;
 
     @Override
     public List<?> listAll() {
@@ -40,9 +43,19 @@ public class ProductRespoServiceImpl implements ProductService{
 
     }
 
+    @Override
+    public Product saveOrUpdate(ProductForm productForm) {
+        return saveOrUpdate(productFormToProduct.convert(productForm));
+    }
+
     @Autowired
     public void setProductRepository(ProductRepository productRepository) {
         this.productRepository = productRepository;
+    }
+
+    @Autowired
+    public void setProductFormToProduct(ProductFormToProduct productFormToProduct) {
+        this.productFormToProduct = productFormToProduct;
     }
 }
 
