@@ -1,7 +1,10 @@
 package com.agharibi.commands;
 
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Size;
 
 public class CustomerForm {
 
@@ -11,11 +14,15 @@ public class CustomerForm {
     private Integer customerVersion;
 
     @NotEmpty
+    @Size(min = 2)
     private String userName;
     private String passwordText;
     private String passwordTextConf;
     private String firstName;
     private String lastName;
+
+    @NotEmpty
+    @Email
     private String email;
     private String phoneNumber;
 
