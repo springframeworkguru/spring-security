@@ -38,6 +38,12 @@ public class UserRepoServiceImpl implements UserService {
         userRepository.delete(id);
     }
 
+    @Override
+    public User findByUsername(String username) {
+
+        return userRepository.findByUserName(username);
+    }
+
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;

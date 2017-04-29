@@ -6,4 +6,5 @@ import com.agharibi.services.CRUDService;
 
 public interface UserService extends CRUDService<User> {
 
+    User findByUsername(String username);
 }

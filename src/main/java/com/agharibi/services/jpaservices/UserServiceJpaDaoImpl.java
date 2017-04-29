@@ -56,6 +56,12 @@ public class UserServiceJpaDaoImpl extends AbstractJpaDaoService implements User
         em.getTransaction().commit();
     }
 
+    @Override
+    public User findByUsername(String username) {
+        EntityManager em = emf.createEntityManager();
+        return em.createQuery("from User where username = :userName", User.class).getSingleResult();
+    }
+
     @Autowired
     public void setEncryptionService(EncryptionService encryptionService) {
         this.encryptionService = encryptionService;
